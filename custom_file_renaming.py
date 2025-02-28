@@ -27,6 +27,7 @@ class AdvancedFileRenamer(ttk.Frame):
         style.theme_use('clam')  # Or try 'alt', 'default'
         # Font and Colors
         font_name = "Bahnschrift"
+
         bg_color = '#2e2e2e'
         fg_color = 'white'
         entry_bg_color = "#4a4a4a"  # Entry background color

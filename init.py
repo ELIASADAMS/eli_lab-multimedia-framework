@@ -75,7 +75,7 @@ categories = {
     "Project Structure Management": [
         ("Advanced Template System", "advanced_template_system"),
         ("Project Metadata Integration", "project_metadata_integration"),
-        ("DCC Project Creation Hook", "dcc_project_creation_hook"),
+        ("Project Documentation Generator", "project_documentation_generator"),
     ],
     "Project Automation": [
         ("Texture Batch Optimising Tool", "texture_batch_optimising_tool"),

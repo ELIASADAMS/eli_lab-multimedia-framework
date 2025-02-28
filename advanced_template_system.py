@@ -29,7 +29,7 @@ class FolderAutomationApp:
 
         # Configure Styles
         style.configure('.', background=bg_color, foreground=fg_color, font=(font_name, 10))
-        style.configure('TLabel', background=bg_color, foreground=fg_color, padding=5, font=(font_name, 12))
+        style.configure('TLabel', background='#2e2e2e', foreground='white', padding=10, font=(font_name, 12, 'bold'))
         style.configure('TButton', background=button_bg_color, foreground=fg_color, padding=8, relief='flat',
                         font=(font_name, 11),
                         borderwidth=0, focuscolor='gray',
@@ -46,12 +46,12 @@ class FolderAutomationApp:
 
         # Project Path
         self.project_path_label = ttk.Label(main_frame, text="Project Path:")
-        self.project_path_entry = ttk.Entry(main_frame, textvariable=self.project_path, width=50)
+        self.project_path_entry = ttk.Entry(main_frame, textvariable=self.project_path, width=50, font=(font_name, 12))
         self.browse_button = ttk.Button(main_frame, text="Browse", command=self.browse_folder)
 
         # Project Name
         self.project_name_label = ttk.Label(main_frame, text="Project Name:")
-        self.project_name_entry = ttk.Entry(main_frame, textvariable=self.project_name, width=50)
+        self.project_name_entry = ttk.Entry(main_frame, textvariable=self.project_name, width=50, font=(font_name, 12))
 
         # Characters
         self.characters_label = ttk.Label(main_frame, text="Characters:")
