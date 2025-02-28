@@ -10,7 +10,6 @@ import sys
 import comtypes
 from comtypes import client
 
-
 class AdvancedFileRenamer(ttk.Frame):
     """Advanced File Renamer GUI."""
 
