@@ -5,15 +5,15 @@ from tkinter import filedialog, messagebox, ttk
 from PIL import Image  # Requires Pillow: pip install Pillow
 import threading
 
+
 def is_already_quantized(image_path):
     """Checks if the PNG file is already quantized by looking for an indexed palette."""
     try:
         img = Image.open(image_path)
         return img.mode == "P"  # "P" mode indicates paletted (quantized) image
     except Exception as e:
-        print(f"Error opening image {image_path} for check: {e}") #Important: log errors during check
+        print(f"Error opening image {image_path} for check: {e}")  # Important: log errors during check
         return False  # Assume not quantized on error
-
 
 
 def compress_textures(root_folder, quality_setting):
@@ -53,7 +53,6 @@ def compress_textures(root_folder, quality_setting):
             root.update()
             continue  # Skip to the next file
 
-
         try:
             command = [
                 "pngquant",
@@ -68,7 +67,8 @@ def compress_textures(root_folder, quality_setting):
             print(result.stderr)
 
         except subprocess.CalledProcessError as e:
-            messagebox.showerror("Error", f"Failed to compress {os.path.basename(input_path)} in {os.path.dirname(input_path)}:\n{e.stderr}")  # More user friendly
+            messagebox.showerror("Error",
+                                 f"Failed to compress {os.path.basename(input_path)} in {os.path.dirname(input_path)}:\n{e.stderr}")  # More user friendly
             print(f"Error compressing {input_path}: {e.stderr}")
         except FileNotFoundError:
             messagebox.showerror("Error", "pngquant is not installed or not in your system's PATH.")
@@ -76,7 +76,6 @@ def compress_textures(root_folder, quality_setting):
 
         progress_bar["value"] = i + 1  # Increment progress bar
         root.update()  # Force GUI update
-
 
     messagebox.showinfo("Success", "Texture compression complete!")
 
@@ -123,25 +122,26 @@ button_active_bg_color = '#606060'
 # Configure styles
 style.configure('.', background=bg_color, foreground=fg_color, font=(font_name, 10))
 style.configure('TLabel', background=bg_color, foreground=fg_color, padding=5, font=(font_name, 12))
-style.configure('TButton', background=button_bg_color, foreground=fg_color, padding=8, relief='flat', font=(font_name, 11),
+style.configure('TButton', background=button_bg_color, foreground=fg_color, padding=8, relief='flat',
+                font=(font_name, 11),
                 borderwidth=0, focuscolor='gray',
                 activebackground=button_active_bg_color, activeforeground=fg_color)
 style.map('TButton',
           background=[('active', button_active_bg_color), ('disabled', button_bg_color)],
           foreground=[('disabled', 'gray')])
-style.configure('TCombobox',  selectbackground=button_bg_color, fieldbackground=button_bg_color, background=button_bg_color, foreground=text_color,
-                 arrowcolor=fg_color, borderwidth=0, lightcolor=button_bg_color, darkcolor=button_bg_color, font=(font_name, 11)) # style of ComboBox
-style.map('TCombobox', fieldbackground=[('readonly', entry_bg_color)]) # Make it consistent when readonly
+style.configure('TCombobox', selectbackground=button_bg_color, fieldbackground=button_bg_color,
+                background=button_bg_color, foreground=text_color,
+                arrowcolor=fg_color, borderwidth=0, lightcolor=button_bg_color, darkcolor=button_bg_color,
+                font=(font_name, 11))  # style of ComboBox
+style.map('TCombobox', fieldbackground=[('readonly', entry_bg_color)])  # Make it consistent when readonly
 
 style.configure('TEntry', fieldbackground="#4a4a4a", foreground=text_color, font=(font_name, 11))  # Entry text color
 
 style.configure('Horizontal.TProgressbar', troughcolor=button_bg_color, background=fg_color)
 
-
 # --- Main Frame ---
 main_frame = ttk.Frame(root, padding=20)
 main_frame.pack(expand=True, fill='both')
-
 
 # --- Folder Selection ---
 folder_label = ttk.Label(main_frame, text="Folder:")

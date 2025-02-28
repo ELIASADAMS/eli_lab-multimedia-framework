@@ -8,13 +8,14 @@ import sys
 
 processes = []  # List to store references to child processes
 
+
 def run_script(script_name):
     """Runs the specified Python script."""
-    process = None # Initialize process to None
+    process = None  # Initialize process to None
     try:
         script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), script_name + ".py")
-        process = subprocess.Popen(["python", script_path]) # Store the process object
-        processes.append(process) # Save this to kill after closing
+        process = subprocess.Popen(["python", script_path])  # Store the process object
+        processes.append(process)  # Save this to kill after closing
 
     except FileNotFoundError:
         tk.messagebox.showerror("Error", f"{script_name}.py not found.")
@@ -22,7 +23,8 @@ def run_script(script_name):
         tk.messagebox.showerror("Error", f"Error running {script_name}.py: {e}")
     finally:
         if not process:
-            processes.remove(process) # Remove process in case it's None
+            processes.remove(process)  # Remove process in case it's None
+
 
 def on_closing():
     """Handles the window closing event."""
@@ -37,6 +39,7 @@ def on_closing():
         processes.remove(process)
     root.destroy()  # Close main window after killing subprocess
 
+
 root = tk.Tk()
 root.title("eli_lab Multimedia Framework")
 root.geometry("450x700")  # Set initial window size
@@ -46,8 +49,8 @@ style = ttk.Style()
 style.theme_use('clam')
 
 # Configure colors and fonts
-font_name = "Bahnschrift" # Define the font
-style.configure('.', background='#2e2e2e', foreground='white', font=(font_name, 10)) # General background and text
+font_name = "Bahnschrift"  # Define the font
+style.configure('.', background='#2e2e2e', foreground='white', font=(font_name, 10))  # General background and text
 style.configure('TFrame', background='#2e2e2e')  # Background for frames
 style.configure('TLabel', background='#2e2e2e', foreground='white', padding=10, font=(font_name, 12, 'bold'))  # Headers
 style.configure('TButton', background='#4a4a4a', foreground='white', padding=10, relief='flat', font=(font_name, 11),
@@ -98,6 +101,6 @@ for category, scripts in categories.items():
                             command=lambda script=script_name: run_script(script))
         button.pack(fill='x', pady=2)  # Stretch buttons to full width
 
-root.protocol("WM_DELETE_WINDOW", on_closing) # Intercept the close event
+root.protocol("WM_DELETE_WINDOW", on_closing)  # Intercept the close event
 
 root.mainloop()

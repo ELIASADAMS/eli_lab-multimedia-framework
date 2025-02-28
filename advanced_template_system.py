@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, ttk
 
+
 class FolderAutomationApp:
     def __init__(self, root):
         self.root = root
@@ -24,12 +25,13 @@ class FolderAutomationApp:
         entry_bg_color = "#4a4a4a"  # Entry background color
         button_bg_color = '#4a4a4a'
         button_active_bg_color = '#606060'
-        text_color = '#d3d3d3' # Define a text color that is visible
+        text_color = '#d3d3d3'  # Define a text color that is visible
 
         # Configure Styles
         style.configure('.', background=bg_color, foreground=fg_color, font=(font_name, 10))
         style.configure('TLabel', background=bg_color, foreground=fg_color, padding=5, font=(font_name, 12))
-        style.configure('TButton', background=button_bg_color, foreground=fg_color, padding=8, relief='flat', font=(font_name, 11),
+        style.configure('TButton', background=button_bg_color, foreground=fg_color, padding=8, relief='flat',
+                        font=(font_name, 11),
                         borderwidth=0, focuscolor='gray',
                         activebackground=button_active_bg_color, activeforeground=fg_color)
         style.map('TButton',
@@ -69,7 +71,6 @@ class FolderAutomationApp:
         # Create Button
         self.create_button = ttk.Button(main_frame, text="Create Structure", command=self.create_folders)
 
-
         # --- Layout ---
         # Project Path
         self.project_path_label.grid(row=0, column=0, sticky="w", padx=5, pady=5)
@@ -99,7 +100,7 @@ class FolderAutomationApp:
         self.create_button.grid(row=5, column=1, sticky="e", padx=5, pady=10)
 
         # Column Configuration
-        root.columnconfigure(1, weight=1) # Make column 1 expandable
+        root.columnconfigure(1, weight=1)  # Make column 1 expandable
 
         # Initial Updates
         self.update_character_widgets()
@@ -147,10 +148,11 @@ class FolderAutomationApp:
 
         # Recreate widgets based on character list
         for i, name in enumerate(self.characters):
-            label = tk.Label(self.characters_frame, text=f"{i+1}. {name}")
+            label = tk.Label(self.characters_frame, text=f"{i + 1}. {name}")
             label.grid(row=i, column=0, sticky="w", padx=5, pady=2)
 
-            delete_button = tk.Button(self.characters_frame, text="Delete", command=lambda idx=i: self.delete_character(idx))
+            delete_button = tk.Button(self.characters_frame, text="Delete",
+                                      command=lambda idx=i: self.delete_character(idx))
             delete_button.grid(row=i, column=1, sticky="e", padx=5, pady=2)
 
     def update_location_widgets(self):
@@ -163,10 +165,12 @@ class FolderAutomationApp:
             label = tk.Label(self.locations_frame, text=f"{location_name}:")
             label.grid(row=row_num, column=0, sticky="w", padx=5, pady=2)
 
-            add_subfolder_button = tk.Button(self.locations_frame, text="+ Add Subfolder", command=lambda name=location_name: self.add_location_subfolder(name))
+            add_subfolder_button = tk.Button(self.locations_frame, text="+ Add Subfolder",
+                                             command=lambda name=location_name: self.add_location_subfolder(name))
             add_subfolder_button.grid(row=row_num, column=1, sticky="w", padx=5, pady=2)
 
-            delete_button = tk.Button(self.locations_frame, text="Delete", command=lambda name=location_name: self.delete_location(name))
+            delete_button = tk.Button(self.locations_frame, text="Delete",
+                                      command=lambda name=location_name: self.delete_location(name))
             delete_button.grid(row=row_num, column=2, sticky="e", padx=5, pady=2)
 
             # Display subfolders
@@ -186,10 +190,12 @@ class FolderAutomationApp:
             label = tk.Label(self.assets_frame, text=f"{asset_name}:")
             label.grid(row=row_num, column=0, sticky="w", padx=5, pady=2)
 
-            add_subfolder_button = tk.Button(self.assets_frame, text="+ Add Subfolder", command=lambda name=asset_name: self.add_asset_subfolder(name))
+            add_subfolder_button = tk.Button(self.assets_frame, text="+ Add Subfolder",
+                                             command=lambda name=asset_name: self.add_asset_subfolder(name))
             add_subfolder_button.grid(row=row_num, column=1, sticky="w", padx=5, pady=2)
 
-            delete_button = tk.Button(self.assets_frame, text="Delete", command=lambda name=asset_name: self.delete_asset(name))
+            delete_button = tk.Button(self.assets_frame, text="Delete",
+                                      command=lambda name=asset_name: self.delete_asset(name))
             delete_button.grid(row=row_num, column=2, sticky="e", padx=5, pady=2)
 
             # Display subfolders
@@ -198,7 +204,6 @@ class FolderAutomationApp:
                 subfolder_label.grid(row=row_num + i + 1, column=0, columnspan=3, sticky="w", padx=20, pady=1)  # Indent
 
             row_num += len(subfolders) + 1  # Increment row_num by the number of subfolders + 1 for the asset itself
-
 
     def delete_character(self, index):
         del self.characters[index]

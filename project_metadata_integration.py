@@ -5,6 +5,7 @@ import os
 import tkinter.messagebox
 from tkinter import filedialog  # Import for browse directory dialog
 
+
 class MetadataForm(ttk.Frame):
     """A form for entering and saving project metadata."""
 
@@ -12,7 +13,7 @@ class MetadataForm(ttk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.metadata_dir = None  # Initialize metadata_dir
-        self.metadata_file_path = None # Initialize path
+        self.metadata_file_path = None  # Initialize path
 
         self.load_style()
         self.init_ui()
@@ -78,11 +79,12 @@ class MetadataForm(ttk.Frame):
         self.browse_button = ttk.Button(self, text="Select Metadata Directory", command=self.browse_directory)
         self.browse_button.grid(row=6, column=0, sticky="w", padx=5, pady=10)
 
-        self.load_button = ttk.Button(self, text="Load Metadata", command=self.load_metadata, state="disabled") # disable the button
+        self.load_button = ttk.Button(self, text="Load Metadata", command=self.load_metadata,
+                                      state="disabled")  # disable the button
         self.load_button.grid(row=6, column=1, sticky="w", padx=5, pady=10)
 
-        self.save_button = ttk.Button(self, text="Save Metadata", command=self.save_metadata) # Call Save function
-        self.save_button.grid(row=6, column=1, sticky="e", padx=5, pady=5) # Show Save Button
+        self.save_button = ttk.Button(self, text="Save Metadata", command=self.save_metadata)  # Call Save function
+        self.save_button.grid(row=6, column=1, sticky="e", padx=5, pady=5)  # Show Save Button
 
         # Configure column weights to make the form expandable
         self.columnconfigure(1, weight=1)
@@ -95,8 +97,8 @@ class MetadataForm(ttk.Frame):
             self.load_button.config(state="normal")  # Enable load button
             print(f"Metadata directory set to: {self.metadata_dir}")  # Debugging
         else:
-            self.metadata_file_path = None # Reset the path to None
-            self.load_button.config(state="disabled") # Return the Load button to 'disable' state
+            self.metadata_file_path = None  # Reset the path to None
+            self.load_button.config(state="disabled")  # Return the Load button to 'disable' state
             print("No directory selected.")  # Debugging
 
     def load_metadata(self):
@@ -113,9 +115,11 @@ class MetadataForm(ttk.Frame):
                 description = metadata.get("project_description", "")
                 self.description_text.delete("1.0", tk.END)  # Clear existing text
                 self.description_text.insert(tk.END, description)
-                tk.messagebox.showinfo("Metadata Load", f"Successfully loaded metadata from:\n{self.metadata_file_path}") # Show message
+                tk.messagebox.showinfo("Metadata Load",
+                                       f"Successfully loaded metadata from:\n{self.metadata_file_path}")  # Show message
             except (FileNotFoundError, json.JSONDecodeError):
-                tk.messagebox.showerror("Load Error", "Error loading metadata. The file might be corrupted or not found.")
+                tk.messagebox.showerror("Load Error",
+                                        "Error loading metadata. The file might be corrupted or not found.")
         else:
             tk.messagebox.showinfo("Metadata Load", "No metadata file found or directory selected.")
 
@@ -139,12 +143,13 @@ class MetadataForm(ttk.Frame):
             return
 
         try:
-            os.makedirs(os.path.dirname(self.metadata_file_path), exist_ok=True) # Make path if doesn't exist
+            os.makedirs(os.path.dirname(self.metadata_file_path), exist_ok=True)  # Make path if doesn't exist
             with open(self.metadata_file_path, "w") as f:
                 json.dump(metadata, f, indent=4)
             tk.messagebox.showinfo("Success", f"Project metadata saved to {self.metadata_file_path}")
         except Exception as e:
             tk.messagebox.showerror("Error", f"Error saving meta: {e}")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
