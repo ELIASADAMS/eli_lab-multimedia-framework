@@ -226,7 +226,7 @@ class TaskAssigner(ttk.Frame):
                 self.poll_entry.delete(0, tk.END)
                 self.poll_entry.insert(0, task["polls"])
 
-                # Load checkbox states, handling potential missing keys
+                # Load checkbox states
                 self.assets_var.set(task.get("assets") == "True")
                 self.characters_var.set(task.get("characters") == "True")
                 self.locations_var.set(task.get("locations") == "True")
@@ -238,43 +238,43 @@ class TaskAssigner(ttk.Frame):
         """Edits the selected task by rewriting the file."""
         selection = self.task_listbox.curselection()
         if selection:
-            if not self.task_name_entry.get() or not self.artist_entry.get():  # test it for null name
+            if not self.task_name_entry.get() or not self.artist_entry.get():
                 messagebox.showerror("Error", "Task name and Artist are required.")
                 return
 
-            index = selection[0]  # get the location
+            index = selection[0]
             # New parameters for the selected directory
             task_name = self.task_listbox.get(index).split(" - ")[0]  # Task Name
             file_name = f"task for {task_name}.txt"
             task_path = os.path.join(self.project_dir, file_name)  # Full task for it to
 
             # Get a new data
-            new_task_name = self.task_name_entry.get()  # take a data from entry to set this to new parameter for a folder
+            new_task_name = self.task_name_entry.get()  # new parameter for a folder
             new_artist = self.artist_entry.get()
-            new_due_date = self.due_date_entry.get_date()  # take a data from entry to set this to new date
-            new_status = self.status_var.get()  # from the combobox to set it to check status
-            new_description = self.description_text.get("1.0", tk.END).strip()  # from text parameter, to rewrite data
-            new_polls = self.poll_entry.get().strip()  # from polls to get and rewrite that new data or leave as is
+            new_due_date = self.due_date_entry.get_date()  # new date
+            new_status = self.status_var.get()  # check status
+            new_description = self.description_text.get("1.0", tk.END).strip()  # rewrite data
+            new_polls = self.poll_entry.get().strip()  # rewrite that new data or leave as is
 
             try:  # Rewrite
                 # open data for text file
-                with open(task_path, "w") as f:  # open data
-                    f.write(f"task name: {new_task_name}\n")  # text to rewrite, clean it
-                    f.write(f"assigned artist: {new_artist}\n")  # text to rewrite assigned_artist, clean it
-                    f.write(f"due date: {new_due_date}\n")  # date to rewrite selected, clean it
-                    f.write(f"status: {new_status}\n")  # to rewrite all clear parameters
-                    f.write(f"description: {new_description}\n")  # to rewrite parameter description - clear
-                    f.write(f"polls: {new_polls}\n")  # to rewrite parameter custom polls and clean it - good
+                with open(task_path, "w") as f:
+                    f.write(f"task name: {new_task_name}\n")
+                    f.write(f"assigned artist: {new_artist}\n")
+                    f.write(f"due date: {new_due_date}\n")
+                    f.write(f"status: {new_status}\n")  # rewrite all clear parameters
+                    f.write(f"description: {new_description}\n")
+                    f.write(f"polls: {new_polls}\n")
                     f.write(f"assets: {self.assets_var.get()}\n")  # to rewrite asset, - clear and good
-                    f.write(f"characters: {self.characters_var.get()}\n")  # to rewrite parameter characters
-                    f.write(f"locations: {self.locations_var.get()}\n")  # to rewrite parameter locations, clean it
-                self.message_label.config(text=f"Task '{task_name}' edited successfully!")  # message if all good
+                    f.write(f"characters: {self.characters_var.get()}\n")
+                    f.write(f"locations: {self.locations_var.get()}\n")
+                self.message_label.config(text=f"Task '{task_name}' edited successfully!")
             except Exception as e:
                 messagebox.showerror("Error", f"Can't find dir or permission denied {e}")
 
-            self.load_tasks()  # after rewrite to new, refresh GUI and load new tasks
+            self.load_tasks()
 
-        else:  # if not selecetd then bad message
+        else:
             self.message_label.config(text="No task selected.")
 
     def delete_selected_task(self):

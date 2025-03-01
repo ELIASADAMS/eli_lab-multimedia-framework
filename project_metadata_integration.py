@@ -3,16 +3,16 @@ import os
 import tkinter as tk
 import tkinter.messagebox
 import tkinter.ttk as ttk
-from tkinter import filedialog  # Import for browse directory dialog
+from tkinter import filedialog
 
 
 class MetadataForm(ttk.Frame):
-    """A form for entering and saving project metadata."""
+    """form for entering and saving project metadata"""
 
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.parent = parent
-        self.metadata_dir = None  # Initialize metadata_dir
+        self.metadata_dir = None  # Initialize metadata
         self.metadata_file_path = None  # Initialize path
 
         self.load_style()
@@ -21,15 +21,15 @@ class MetadataForm(ttk.Frame):
     def load_style(self):
         # Load the style
         style = ttk.Style()
-        style.theme_use('clam')  # Or try 'alt', 'default'
+        style.theme_use('clam')
         # Font and Colors
         font_name = "Bahnschrift"
         bg_color = '#2e2e2e'
         fg_color = 'white'
-        entry_bg_color = "#4a4a4a"  # Entry background color
+        entry_bg_color = "#4a4a4a"
         button_bg_color = '#4a4a4a'
         button_active_bg_color = '#606060'
-        text_color = '#d3d3d3'  # Define a text color that is visible
+        text_color = '#d3d3d3'
 
         # Configure Styles
         style.configure('.', background=bg_color, foreground=fg_color, font=(font_name, 10))
@@ -46,7 +46,7 @@ class MetadataForm(ttk.Frame):
         self.style = style
 
     def init_ui(self):
-        """Initializes the UI elements of the form."""
+        """UI elements"""
 
         self.project_name = tk.StringVar()
         self.project_code = tk.StringVar()
@@ -80,26 +80,26 @@ class MetadataForm(ttk.Frame):
         self.browse_button.grid(row=6, column=0, sticky="w", padx=5, pady=10)
 
         self.load_button = ttk.Button(self, text="Load Metadata", command=self.load_metadata,
-                                      state="disabled")  # disable the button
+                                      state="disabled")
         self.load_button.grid(row=6, column=1, sticky="w", padx=5, pady=10)
 
         self.save_button = ttk.Button(self, text="Save Metadata", command=self.save_metadata)  # Call Save function
-        self.save_button.grid(row=6, column=1, sticky="e", padx=5, pady=5)  # Show Save Button
+        self.save_button.grid(row=6, column=1, sticky="e", padx=5, pady=5)
 
-        # Configure column weights to make the form expandable
+        #column weights
         self.columnconfigure(1, weight=1)
 
     def browse_directory(self):
-        """Opens a directory selection dialog and sets the metadata directory."""
+        """set metadata directory."""
         self.metadata_dir = filedialog.askdirectory(title="Select Metadata Directory")
         if self.metadata_dir:
             self.metadata_file_path = os.path.join(self.metadata_dir, "project_metadata.json")
             self.load_button.config(state="normal")  # Enable load button
             print(f"Metadata directory set to: {self.metadata_dir}")  # Debugging
         else:
-            self.metadata_file_path = None  # Reset the path to None
-            self.load_button.config(state="disabled")  # Return the Load button to 'disable' state
-            print("No directory selected.")  # Debugging
+            self.metadata_file_path = None  # Reset path to None
+            self.load_button.config(state="disabled")
+            print("No directory selected.")
 
     def load_metadata(self):
         """Loads existing metadata from the JSON file (if it exists)."""
@@ -116,7 +116,7 @@ class MetadataForm(ttk.Frame):
                 self.description_text.delete("1.0", tk.END)  # Clear existing text
                 self.description_text.insert(tk.END, description)
                 tk.messagebox.showinfo("Metadata Load",
-                                       f"Successfully loaded metadata from:\n{self.metadata_file_path}")  # Show message
+                                       f"Successfully loaded metadata from:\n{self.metadata_file_path}")
             except (FileNotFoundError, json.JSONDecodeError):
                 tk.messagebox.showerror("Load Error",
                                         "Error loading metadata. The file might be corrupted or not found.")
@@ -124,7 +124,7 @@ class MetadataForm(ttk.Frame):
             tk.messagebox.showinfo("Metadata Load", "No metadata file found or directory selected.")
 
     def save_metadata(self):
-        """Saves the entered metadata to the JSON file."""
+        """Save to JSON file."""
         if not self.metadata_file_path:
             tk.messagebox.showerror("Save Error", "Please select a metadata directory first.")
             return
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     root.title("Project Metadata Integration")
     root.geometry("600x400")
 
-    # Basic styling (replace with your main application's styling)
+    # Basic styling
     style = ttk.Style()
     style.theme_use('clam')
 

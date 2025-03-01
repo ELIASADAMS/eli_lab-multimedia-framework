@@ -1,21 +1,20 @@
 import os
-import signal  # Import the signal module
+import signal
 import subprocess
 import sys
 import tkinter as tk
 import tkinter.messagebox
 import tkinter.ttk as ttk
 
-processes = []  # List to store references to child processes
+processes = []
 
 
 def run_script(script_name):
-    """Runs the specified Python script."""
-    process = None  # Initialize process to None
+    process = None
     try:
         script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), script_name + ".py")
-        process = subprocess.Popen(["python", script_path])  # Store the process object
-        processes.append(process)  # Save this to kill after closing
+        process = subprocess.Popen(["python", script_path])
+        processes.append(process)  # kill after closing
 
     except FileNotFoundError:
         tk.messagebox.showerror("Error", f"{script_name}.py not found.")
@@ -23,39 +22,39 @@ def run_script(script_name):
         tk.messagebox.showerror("Error", f"Error running {script_name}.py: {e}")
     finally:
         if not process:
-            processes.remove(process)  # Remove process in case it's None
+            processes.remove(process)
 
 
 def on_closing():
     """Handles the window closing event."""
-    for process in processes[:]:  # Iterate through a copy of the list to allow deletion
-        if process is not None and process.poll() is None:  # If the process exists and is still running
+    for process in processes[:]:
+        if process is not None and process.poll() is None:
             if sys.platform == 'win32':
-                process.terminate()  # For Windows
+                process.terminate()
             else:
-                process.send_signal(signal.SIGTERM)  # Send a termination signal (SIGTERM)
+                process.send_signal(signal.SIGTERM)
 
-            process.wait()  # Wait for the process to finish
+            process.wait()
         processes.remove(process)
-    root.destroy()  # Close main window after killing subprocess
+    root.destroy()
 
 
 root = tk.Tk()
 root.title("eli_lab Multimedia Framework")
-root.geometry("450x700")  # Set initial window size
+root.geometry("450x700")
 
 # Color scheme and styles (customizable)
 style = ttk.Style()
 style.theme_use('clam')
 
 # Configure colors and fonts
-font_name = "Bahnschrift"  # Define the font
-style.configure('.', background='#2e2e2e', foreground='white', font=(font_name, 10))  # General background and text
-style.configure('TFrame', background='#2e2e2e')  # Background for frames
-style.configure('TLabel', background='#2e2e2e', foreground='white', padding=10, font=(font_name, 12, 'bold'))  # Headers
+font_name = "Bahnschrift"
+style.configure('.', background='#2e2e2e', foreground='white', font=(font_name, 10))
+style.configure('TFrame', background='#2e2e2e')
+style.configure('TLabel', background='#2e2e2e', foreground='white', padding=10, font=(font_name, 12, 'bold'))
 style.configure('TButton', background='#4a4a4a', foreground='white', padding=10, relief='flat', font=(font_name, 11),
                 borderwidth=0, focuscolor='gray',
-                activebackground='#606060',  # Color when pressed
+                activebackground='#606060',
                 activeforeground='white')
 style.map('TButton',
           background=[('active', '#606060'), ('disabled', '#4a4a4a')],
@@ -67,7 +66,7 @@ main_frame.pack(expand=True, fill='both')
 
 # Title
 title_label = ttk.Label(main_frame, text="eli_lab Multimedia Framework", font=(font_name, 20, 'bold'), anchor="center")
-title_label.pack(pady=(0, 20))  # Add padding above and below
+title_label.pack(pady=(0, 20))
 
 # Categories and scripts
 categories = {
@@ -93,19 +92,18 @@ categories = {
     ],
 }
 
-# Creating widgets
 for category, scripts in categories.items():
     category_frame = ttk.Frame(main_frame, padding=(10, 0, 10, 10))
     category_frame.pack(fill='x', padx=10, pady=5)
 
     category_label = ttk.Label(category_frame, text=category, anchor='w')
-    category_label.pack(fill='x')  # Occupy the entire width
+    category_label.pack(fill='x')
 
     for func_name, script_name in scripts:
         button = ttk.Button(category_frame, text=func_name,
                             command=lambda script=script_name: run_script(script))
-        button.pack(fill='x', pady=2)  # Stretch buttons to full width
+        button.pack(fill='x', pady=2)
 
-root.protocol("WM_DELETE_WINDOW", on_closing)  # Intercept the close event
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
 root.mainloop()

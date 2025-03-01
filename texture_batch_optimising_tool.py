@@ -2,22 +2,23 @@ import os
 import subprocess
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-from PIL import Image  # Requires Pillow: pip install Pillow
+from PIL import Image
+
 import threading
 
 
 def is_already_quantized(image_path):
-    """Checks if the PNG file is already quantized by looking for an indexed palette."""
+    """Checks if the PNG file is already quantized"""
     try:
         img = Image.open(image_path)
-        return img.mode == "P"  # "P" mode indicates paletted (quantized) image
+        return img.mode == "P"  # "P" mode indicates quantized image
     except Exception as e:
-        print(f"Error opening image {image_path} for check: {e}")  # Important: log errors during check
+        print(f"Error opening image {image_path} for check: {e}")  # log errors
         return False  # Assume not quantized on error
 
 
 def compress_textures(root_folder, quality_setting):
-    """Compresses textures recursively with a progress bar, skipping already quantized images."""
+    """Compresses textures recursively, skipping already quantized images."""
 
     if not os.path.exists(root_folder):
         messagebox.showerror("Error", "Folder not found!")
@@ -30,11 +31,11 @@ def compress_textures(root_folder, quality_setting):
         "High": "70-90",
     }
 
-    quality = quality_values.get(quality_setting, "65-85")  # Default to medium
+    quality = quality_values.get(quality_setting, "65-85")  # Default
 
     all_png_files = []
     for dirpath, dirnames, filenames in os.walk(root_folder):
-        png_files = [os.path.join(dirpath, f) for f in filenames if f.lower().endswith(".png")]  # Store full paths
+        png_files = [os.path.join(dirpath, f) for f in filenames if f.lower().endswith(".png")]
         all_png_files.extend(png_files)  # Accumulate all PNG files
 
     total_files = len(all_png_files)
@@ -44,7 +45,7 @@ def compress_textures(root_folder, quality_setting):
 
     progress_bar["maximum"] = total_files  # Set the maximum value for the progress bar
     progress_bar["value"] = 0  # Reset the progress bar
-    root.update_idletasks()  # Ensure progress bar is visible *before* starting
+    root.update_idletasks()
 
     for i, input_path in enumerate(all_png_files):
         if is_already_quantized(input_path):
@@ -68,7 +69,7 @@ def compress_textures(root_folder, quality_setting):
 
         except subprocess.CalledProcessError as e:
             messagebox.showerror("Error",
-                                 f"Failed to compress {os.path.basename(input_path)} in {os.path.dirname(input_path)}:\n{e.stderr}")  # More user friendly
+                                 f"Failed to compress {os.path.basename(input_path)} in {os.path.dirname(input_path)}:\n{e.stderr}")
             print(f"Error compressing {input_path}: {e.stderr}")
         except FileNotFoundError:
             messagebox.showerror("Error", "pngquant is not installed or not in your system's PATH.")
@@ -102,7 +103,7 @@ def start_compression():
 # --- GUI Setup ---
 root = tk.Tk()
 root.title("Texture Batch Optimising Tool")
-root.geometry("600x350")  # Increased size for better spacing and readability
+root.geometry("600x350")
 
 # --- Styling ---
 style = ttk.Style(root)
@@ -133,9 +134,10 @@ style.configure('TCombobox', selectbackground=button_bg_color, fieldbackground=b
                 background=button_bg_color, foreground=text_color,
                 arrowcolor=fg_color, borderwidth=0, lightcolor=button_bg_color, darkcolor=button_bg_color,
                 font=(font_name, 11))  # style of ComboBox
-style.map('TCombobox', fieldbackground=[('readonly', entry_bg_color)])  # Make it consistent when readonly
 
-style.configure('TEntry', fieldbackground="#4a4a4a", foreground=text_color, font=(font_name, 11))  # Entry text color
+style.map('TCombobox', fieldbackground=[('readonly', entry_bg_color)])
+
+style.configure('TEntry', fieldbackground="#4a4a4a", foreground=text_color, font=(font_name, 11))
 
 style.configure('Horizontal.TProgressbar', troughcolor=button_bg_color, background=fg_color)
 

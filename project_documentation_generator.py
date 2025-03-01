@@ -16,7 +16,7 @@ class DocumentationGenerator(ttk.Frame):
     def load_style(self):
         # Load the style
         style = ttk.Style()
-        style.theme_use('clam')  # Or try 'alt', 'default'
+        style.theme_use('clam')
         # Font and Colors
         font_name = "Bahnschrift"
         bg_color = '#2e2e2e'
@@ -24,7 +24,7 @@ class DocumentationGenerator(ttk.Frame):
         entry_bg_color = "#4a4a4a"  # Entry background color
         button_bg_color = '#4a4a4a'
         button_active_bg_color = '#606060'
-        text_color = '#d3d3d3'  # Define a text color that is visible
+        text_color = '#d3d3d3'
         arrow_color = 'white'
 
         # Configure Styles
@@ -66,7 +66,7 @@ class DocumentationGenerator(ttk.Frame):
         self.status_combobox = ttk.Combobox(self, textvariable=self.status_var, values=self.status_choices,
                                             state="readonly", width=20)
         self.status_combobox.grid(row=1, column=1, sticky="w", padx=5, pady=5)
-        self.status_combobox.bind("<<ComboboxSelected>>", self.update_markdown)  # Binding the Combobox
+        self.status_combobox.bind("<<ComboboxSelected>>", self.update_markdown)
 
         # --- License ---
         self.license_label = ttk.Label(self, text="License:")
@@ -76,7 +76,7 @@ class DocumentationGenerator(ttk.Frame):
         self.license_combobox = ttk.Combobox(self, textvariable=self.license_var, values=self.license_choices,
                                              state="readonly", width=20)
         self.license_combobox.grid(row=2, column=1, sticky="w", padx=5, pady=5)
-        self.license_combobox.bind("<<ComboboxSelected>>", self.update_markdown)  # Binding the Combobox
+        self.license_combobox.bind("<<ComboboxSelected>>", self.update_markdown)
 
         # --- Synopsis ---
         self.synopsis_label = ttk.Label(self, text="Synopsis:")
@@ -90,35 +90,35 @@ class DocumentationGenerator(ttk.Frame):
         self.project_code_label.grid(row=4, column=0, sticky="w", padx=5, pady=5)
         self.project_code_entry = ttk.Entry(self, width=50)
         self.project_code_entry.grid(row=4, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-        self.project_code_entry.bind("<KeyRelease>", self.update_markdown)  # Update on each key release
+        self.project_code_entry.bind("<KeyRelease>", self.update_markdown)
 
         # --- Client ---
         self.client_label = ttk.Label(self, text="Client:")
         self.client_label.grid(row=5, column=0, sticky="w", padx=5, pady=5)
         self.client_entry = ttk.Entry(self, width=50)
         self.client_entry.grid(row=5, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-        self.client_entry.bind("<KeyRelease>", self.update_markdown)  # Update on each key release
+        self.client_entry.bind("<KeyRelease>", self.update_markdown)
 
         # --- Pipeline Version ---
         self.pipeline_version_label = ttk.Label(self, text="Pipeline Version:")
         self.pipeline_version_label.grid(row=6, column=0, sticky="w", padx=5, pady=5)
         self.pipeline_version_entry = ttk.Entry(self, width=50)
         self.pipeline_version_entry.grid(row=6, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-        self.pipeline_version_entry.bind("<KeyRelease>", self.update_markdown)  # Update on each key release
+        self.pipeline_version_entry.bind("<KeyRelease>", self.update_markdown)
 
         # --- Lead Artist ---
         self.lead_artist_label = ttk.Label(self, text="Lead Artist:")
         self.lead_artist_label.grid(row=7, column=0, sticky="w", padx=5, pady=5)
         self.lead_artist_entry = ttk.Entry(self, width=50)
         self.lead_artist_entry.grid(row=7, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-        self.lead_artist_entry.bind("<KeyRelease>", self.update_markdown)  # Update on each key release
+        self.lead_artist_entry.bind("<KeyRelease>", self.update_markdown)
 
         # --- Key Themes ---
         self.key_themes_label = ttk.Label(self, text="Key Themes (comma-separated):")
         self.key_themes_label.grid(row=8, column=0, sticky="w", padx=5, pady=5)
         self.key_themes_entry = ttk.Entry(self, width=50)
         self.key_themes_entry.grid(row=8, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-        self.key_themes_entry.bind("<KeyRelease>", self.update_markdown)  # Update on each key release
+        self.key_themes_entry.bind("<KeyRelease>", self.update_markdown)
 
         # --- Contact Info ---
         self.contact_label = ttk.Label(self, text="Contact Info:")
@@ -133,7 +133,7 @@ class DocumentationGenerator(ttk.Frame):
         self.crew_label.grid(row=10, column=0, sticky="w", padx=5, pady=5)
         self.crew_text = tk.Text(self, wrap=tk.WORD, width=50, height=4)
         self.crew_text.grid(row=10, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-        self.crew_text.bind("<KeyRelease>", self.update_markdown)  # Bind <KeyRelease> to the text widget
+        self.crew_text.bind("<KeyRelease>", self.update_markdown)
 
         # --- Acknowledgements ---
         self.acknowledgements_label = ttk.Label(self, text="Acknowledgements:")
@@ -149,7 +149,7 @@ class DocumentationGenerator(ttk.Frame):
         self.generate_button = ttk.Button(self, text="Generate/Save", command=self.generate_and_save)
         self.generate_button.grid(row=13, column=1, sticky="e", padx=5, pady=10)
 
-        # Configure row and column weights for resizing
+        # row and column weights
         self.columnconfigure(1, weight=1)
         self.rowconfigure(12, weight=1)
 
@@ -195,7 +195,7 @@ class DocumentationGenerator(ttk.Frame):
         self.status_var.set(metadata.get("project_status", self.status_choices[0]))
         self.license_var.set(metadata.get("license", self.license_choices[0]))
         self.synopsis_text.delete("1.0", tk.END)
-        self.synopsis_text.insert("1.0", metadata.get("project_description", ""))  # Synopsis from 'project_description'
+        self.synopsis_text.insert("1.0", metadata.get("project_description", ""))
         self.project_code_entry.delete(0, tk.END)  # Clear before inserting
         self.project_code_entry.insert(0, metadata.get("project_code", ""))
         self.client_entry.delete(0, tk.END)
@@ -228,15 +228,14 @@ class DocumentationGenerator(ttk.Frame):
         crew_members_text = self.crew_text.get("1.0", tk.END).strip()
         acknowledgements = self.acknowledgements_text.get("1.0", tk.END).strip()
 
-        # Format Key Themes (comma-separated to bullet points)
+        # Format Key Themes (comma-separated)
         key_themes = [theme.strip() for theme in key_themes_str.split(",")]
         formatted_themes = "\n".join([f"* {theme}" for theme in key_themes])
 
-        # Format Crew (add * and ** around each name and title)
+        # Format Crew
         crew_members = [member.strip() for member in crew_members_text.split("\n")]
         formatted_crew = "\n".join([f"* **{member}**" for member in crew_members])
 
-        # Create the GitHub-style Markdown content
         markdown = f"""# {project_name}
 
 [![Project Status](https://img.shields.io/badge/status-{project_status.replace(" ", "%20")}-yellow)](https://shields.io/)
@@ -284,8 +283,8 @@ class DocumentationGenerator(ttk.Frame):
         """Updates the Markdown content in the text editor."""
         try:
             # Get values from the GUI
-            metadata = self.load_metadata()  # Load metadata for placeholders
-            project_name = metadata.get("project_name", "[Project Name Placeholder]")  # Get the project name
+            metadata = self.load_metadata()  # Load metadata
+            project_name = metadata.get("project_name", "[Project Name Placeholder]")  # Get project name
             project_status = self.status_var.get()
             license_badge = self.license_var.get()
             synopsis = self.synopsis_text.get("1.0", tk.END).strip()
@@ -298,15 +297,14 @@ class DocumentationGenerator(ttk.Frame):
             crew_members_text = self.crew_text.get("1.0", tk.END).strip()
             acknowledgements = self.acknowledgements_text.get("1.0", tk.END).strip()
 
-            # Format Key Themes (comma-separated to bullet points)
+            # Format Key Themes (comma-separated)
             key_themes = [theme.strip() for theme in key_themes_str.split(",")]
             formatted_themes = "\n".join([f"* {theme}" for theme in key_themes])
 
-            # Format Crew (add * and ** around each name and title)
+            # Format Crew
             crew_members = [member.strip() for member in crew_members_text.split("\n")]
             formatted_crew = "\n".join([f"* **{member}**" for member in crew_members])
 
-            # Create the GitHub-style Markdown content
             markdown = f"""# {project_name}
 
 [![Project Status](https://img.shields.io/badge/status-{project_status.replace(" ", "%20")}-yellow)](https://shields.io/)
@@ -370,9 +368,8 @@ class DocumentationGenerator(ttk.Frame):
 
 
 def integrate_documentation_generator(main_frame):
-    # No need to open filedialog here. Let the main program handle that
     documentation_generator = DocumentationGenerator(main_frame,
-                                                     metadata_dir=None)  # Pass metadata_dir as None initially
+                                                     metadata_dir=None)  # Pass metadata_dir as None
     documentation_generator.pack(expand=True, fill="both")
 
 
@@ -395,8 +392,6 @@ if __name__ == "__main__":
         if metadata_dir:
             integrate_documentation_generator(main_frame)
 
-
-    # integrate_documentation_generator(main_frame) # remove this line
     generate_documentation_callback()
 
     root.mainloop()
