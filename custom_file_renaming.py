@@ -1,14 +1,12 @@
+import datetime
+import os
+import sys
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog, messagebox
-import os
-import re
-import datetime
-import time  # Import the time module
+
 import magic
-import sys
-import comtypes
-from comtypes import client
+
 
 class AdvancedFileRenamer(ttk.Frame):
     """Advanced File Renamer GUI."""

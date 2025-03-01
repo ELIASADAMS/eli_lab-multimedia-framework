@@ -1,11 +1,10 @@
-import tkinter as tk
-import tkinter.ttk as ttk
-import subprocess
 import os
-import tkinter.messagebox
 import signal  # Import the signal module
+import subprocess
 import sys
-
+import tkinter as tk
+import tkinter.messagebox
+import tkinter.ttk as ttk
 
 processes = []  # List to store references to child processes
 
@@ -84,6 +83,11 @@ categories = {
     ],
     "Data Management": [
         ("File Validation", "file_validation"),
+        ("Asset Reporting", "asset_reporting"),
+        ("Project Validation", "project_validation"),
+    ],
+    "Control": [
+        ("Automated Task Management & Reporting", "task_assigner.py"),
         ("Asset Reporting", "asset_reporting"),
         ("Project Validation", "project_validation"),
     ],
