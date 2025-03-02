@@ -2,9 +2,8 @@ import os
 import subprocess
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-from PIL import Image
 
-import threading
+from PIL import Image
 
 
 def is_already_quantized(image_path):

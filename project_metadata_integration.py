@@ -86,7 +86,7 @@ class MetadataForm(ttk.Frame):
         self.save_button = ttk.Button(self, text="Save Metadata", command=self.save_metadata)  # Call Save function
         self.save_button.grid(row=6, column=1, sticky="e", padx=5, pady=5)
 
-        #column weights
+        # column weights
         self.columnconfigure(1, weight=1)
 
     def browse_directory(self):

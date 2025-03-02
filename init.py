@@ -41,7 +41,7 @@ def on_closing():
 
 root = tk.Tk()
 root.title("eli_lab Multimedia Framework")
-root.geometry("450x700")
+root.geometry("450x820")
 
 # Color scheme and styles (customizable)
 style = ttk.Style()
@@ -78,16 +78,14 @@ categories = {
     "Project Automation": [
         ("Texture Batch Optimising Tool", "texture_batch_optimising_tool"),
         ("Custom File Renaming", "custom_file_renaming"),
-        ("Automated Project Clean", "automated_project_clean"),
     ],
     "Data Management": [
         ("File Validation", "file_validation"),
-        ("Asset Reporting", "asset_reporting"),
         ("Project Validation", "project_validation"),
     ],
     "Control": [
-        ("Automated Task Management & Reporting", "task_assigner.py"),
-        ("Asset Reporting", "asset_reporting"),
+        ("Automated Task Management & Reporting", "task_assigner"),
+        ("Blender Production Support", "blender_production_support"),
         ("Project Validation", "project_validation"),
     ],
 }

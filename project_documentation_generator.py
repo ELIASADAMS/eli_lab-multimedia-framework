@@ -392,6 +392,7 @@ if __name__ == "__main__":
         if metadata_dir:
             integrate_documentation_generator(main_frame)
 
+
     generate_documentation_callback()
 
     root.mainloop()
