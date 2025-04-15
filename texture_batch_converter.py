@@ -173,9 +173,6 @@ def start_compression():
     browse_button["state"] = "disabled"
     quality_combobox["state"] = "disabled"
 
-    # Get the quality preset (not used here but kept for future use)
-    selected_quality = quality_combobox.get()
-
     # Update the progress bar
     def update_progress(value):
         progress_bar["value"] = value
