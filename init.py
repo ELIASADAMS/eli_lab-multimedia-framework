@@ -105,4 +105,3 @@ for category, scripts in categories.items():
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
 root.mainloop()
-
