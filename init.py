@@ -77,6 +77,7 @@ categories = {
     ],
     "Project Automation": [
         ("Texture Batch Optimising Tool", "texture_batch_optimising_tool"),
+        ("Texture Batch Converter", "texture_batch_converter"),
         ("Custom File Renaming", "custom_file_renaming"),
     ],
     "Data Management": [
@@ -85,8 +86,7 @@ categories = {
     ],
     "Control": [
         ("Automated Task Management & Reporting", "task_assigner"),
-        ("Blender Production Support", "blender_production_support"),
-        ("Project Validation", "project_validation"),
+        ("Historical Performance Analyzer", "historical_performance_analyzer"),
     ],
 }
 
@@ -105,3 +105,4 @@ for category, scripts in categories.items():
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
 root.mainloop()
+
