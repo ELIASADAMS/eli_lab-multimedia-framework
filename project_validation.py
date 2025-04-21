@@ -1,8 +1,8 @@
 import os
 import shutil
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-import threading
 
 # --- Constants ---
 BLENDER_FILES_DIR = r"D:\Ierarchy\ELI_LAB STUDIO\8. Coding\eli_lab-multimedia-framework\blender_files"  # Raw string for Windows path
@@ -12,7 +12,8 @@ TEMPLATE_FILES = {
     "eli_lab territory_locations": "Location.blend",
 }
 OUTPUT_FILE_EXTENSION = ".blend"
-TOP_LEVEL_FOLDERS = list(TEMPLATE_FILES.keys()) # list of top level directories
+TOP_LEVEL_FOLDERS = list(TEMPLATE_FILES.keys())  # list of top level directories
+
 
 # --- Helper Functions ---
 def create_blender_file(directory, template_path):
@@ -32,6 +33,7 @@ def create_blender_file(directory, template_path):
     except Exception as e:
         print(f"Error creating Blender file in '{directory}': {e}")
 
+
 def validate_project(root_directory, progress_callback=None, start_progress_callback=None, end_progress_callback=None):
     """Analyzes the directory structure and creates Blender files in leaf folders.
 
@@ -48,7 +50,6 @@ def validate_project(root_directory, progress_callback=None, start_progress_call
         if not dirs:
             leaf_folders.append(root)  # It's a leaf folder
 
-
     total_folders = len(leaf_folders)
     processed_folders = 0
 
@@ -59,10 +60,10 @@ def validate_project(root_directory, progress_callback=None, start_progress_call
         # Get the list of parent directories
         parents = [os.path.basename(path) for path in leaf_folder.split(os.sep)[:-1]]
 
-        #Find the top level parent that matches the keys in the template files
+        # Find the top level parent that matches the keys in the template files
         top_level_parent = next((parent for parent in parents if parent in TOP_LEVEL_FOLDERS), None)
 
-        #Check if parent is in Template files
+        # Check if parent is in Template files
         if top_level_parent in TEMPLATE_FILES:
             template_filename = TEMPLATE_FILES[top_level_parent]
             template_path = os.path.join(BLENDER_FILES_DIR, template_filename)
@@ -73,13 +74,13 @@ def validate_project(root_directory, progress_callback=None, start_progress_call
         else:
             print(f"Skipping '{leaf_folder}': No matching top-level parent directory in template list.")
 
-
         processed_folders += 1
         if progress_callback:
             progress_callback(processed_folders)
 
     if end_progress_callback:
         end_progress_callback()
+
 
 # --- GUI Setup ---
 root = tk.Tk()
@@ -120,11 +121,13 @@ folder_label.pack(pady=(0, 5), fill='x')
 folder_path_entry = ttk.Entry(main_frame, width=50)
 folder_path_entry.pack(pady=(0, 5), fill='x')
 
+
 def browse_folder():
     folder_path = filedialog.askdirectory()
     if folder_path:
         folder_path_entry.delete(0, tk.END)
         folder_path_entry.insert(0, folder_path)
+
 
 browse_button = ttk.Button(main_frame, text="Browse", command=browse_folder)
 browse_button.pack(pady=(0, 10), fill='x')
