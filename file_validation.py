@@ -1,13 +1,13 @@
-import os
 import json
-import time
+import os
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-import threading
 
 # --- Constants ---
 VALIDATION_FILE = "folder_validation.json"
 DEFAULT_FONT = ("Bahnschrift", 10)
+
 
 # --- Helper Functions ---
 def get_folder_size(start_path='.'):
@@ -19,6 +19,7 @@ def get_folder_size(start_path='.'):
             if not os.path.islink(fp):  # Skip symbolic links
                 total_size += os.path.getsize(fp)
     return total_size
+
 
 def analyze_directory(root_directory):
     """Analyzes a directory and its subdirectories, returning file metadata."""
@@ -37,6 +38,7 @@ def analyze_directory(root_directory):
                 print(f"Error analyzing file {filepath}: {e}")
     return files
 
+
 def load_validation_data(directory):
     """Loads validation data from a JSON file in the given directory."""
     filepath = os.path.join(directory, VALIDATION_FILE)
@@ -49,6 +51,7 @@ def load_validation_data(directory):
         print(f"Error loading validation {e}")
         return {"files": {}}
 
+
 def save_validation_data(directory, data):
     """Saves validation data to a JSON file in the given directory."""
     filepath = os.path.join(directory, VALIDATION_FILE)
@@ -57,6 +60,7 @@ def save_validation_data(directory, data):
             json.dump(data, f, indent=4)
     except Exception as e:
         print(f"Error saving validation data to {filepath}: {e}")
+
 
 def compare_directory(directory):
     """Compares directory content (incl. subdirs) to the saved validation data."""
@@ -75,23 +79,24 @@ def compare_directory(directory):
         else:
             # Get data from validation file (old)
             file_data = validation_data["files"][filepath]
-            #Get the data with name from analysis dir (new)
+            # Get the data with name from analysis dir (new)
             if details["size"] != file_data["size"] or details["modified"] != file_data["modified"]:
-                status[filepath] = "modified" #set to modified file
+                status[filepath] = "modified"  # set to modified file
 
     # Check for deleted files
     for filepath in validation_data["files"]:
         if filepath not in current_files:
-            status[filepath] = "deleted" #it was deleted
+            status[filepath] = "deleted"  # it was deleted
 
     return status
+
 
 def chip_directory(directory):
     """Chips the directory by creating/updating the validation JSON."""
     directory_data = analyze_directory(directory)
     files = {}
     for item, details in directory_data.items():
-        #no type
+        # no type
         files[item] = {
             "size": details["size"],
             "modified": details["modified"]
@@ -104,7 +109,7 @@ def chip_directory(directory):
         with open(metadata_path, 'r') as f:
             metadata = json.load(f)
     except FileNotFoundError:
-        print("project_metadata.json not found in this directory. Skipping.") # Inform if it was not found
+        print("project_metadata.json not found in this directory. Skipping.")  # Inform if it was not found
     except Exception as e:
         print(f"Error loading project_metadata.json: {e}")
 
@@ -112,10 +117,11 @@ def chip_directory(directory):
     validation_data = {
         "version": "1.0",  # Add a version number for future compatibility
         "metadata": metadata,  # Project Metadata (if available)
-        "files": files,        # List of files and their metadata
+        "files": files,  # List of files and their metadata
     }
     save_validation_data(directory, validation_data)
     messagebox.showinfo("Info", f"Directory '{os.path.basename(directory)}' chipped successfully.")
+
 
 # --- GUI Integration ---
 def display_directory_structure(root_directory, tree):
@@ -126,7 +132,8 @@ def display_directory_structure(root_directory, tree):
     def add_node(parent, directory):
         """Recursively add directory structure to Treeview, displaying file statuses."""
         try:
-            status = status_cache[directory] if directory in status_cache else compare_directory(directory)  # Compare whole directory at once
+            status = status_cache[directory] if directory in status_cache else compare_directory(
+                directory)  # Compare whole directory at once
         except Exception as e:  # handle errors in directories and write
             print(f"Error during analysis: {e}")
             return
@@ -151,6 +158,7 @@ def display_directory_structure(root_directory, tree):
                 add_node(node_id, item_path)
 
     add_node("", root_directory)
+
 
 # --- GUI Setup ---
 root = tk.Tk()
@@ -195,11 +203,13 @@ folder_label.pack(pady=(0, 5), fill='x')
 folder_path_entry = ttk.Entry(main_frame, width=50)
 folder_path_entry.pack(pady=(0, 5), fill='x')
 
+
 def browse_folder():
     folder_path = filedialog.askdirectory()
     if folder_path:
         folder_path_entry.delete(0, tk.END)
         folder_path_entry.insert(0, folder_path)
+
 
 browse_button = ttk.Button(main_frame, text="Browse", command=browse_folder)
 browse_button.pack(pady=(0, 10), fill='x')
@@ -209,10 +219,11 @@ tree = ttk.Treeview(main_frame, show="tree", padding=5)
 tree.pack(expand=True, fill='both')
 
 # Define treeview tags and colors
-tree.tag_configure('new', foreground = new_color)
-tree.tag_configure('modified', foreground = modified_color)
-tree.tag_configure('deleted', foreground = deleted_color)
-tree.tag_configure('valid', foreground = valid_color) # if it's checked and no changes, show
+tree.tag_configure('new', foreground=new_color)
+tree.tag_configure('modified', foreground=modified_color)
+tree.tag_configure('deleted', foreground=deleted_color)
+tree.tag_configure('valid', foreground=valid_color)  # if it's checked and no changes, show
+
 
 # --- Button Functions ---
 def analyze_project():
@@ -221,47 +232,49 @@ def analyze_project():
         messagebox.showerror("Error", "Please select a project folder.")
         return
 
-    #GUI DISABLE
+    # GUI DISABLE
     analyze_button["state"] = "disabled"
     chip_button["state"] = "disabled"
     browse_button["state"] = "disabled"
-    refresh_button["state"] = "disabled" #Disable the refresh
+    refresh_button["state"] = "disabled"  # Disable the refresh
 
-    #Update in the GUI with thread process
+    # Update in the GUI with thread process
     def after_action():
-        #Now list the directory and display to gui
+        # Now list the directory and display to gui
         display_directory_structure(project_directory, tree)
-        #after
+        # after
         analyze_button["state"] = "normal"
         chip_button["state"] = "normal"
         browse_button["state"] = "normal"
-        refresh_button["state"] = "normal" #Enable the refresh
+        refresh_button["state"] = "normal"  # Enable the refresh
 
-    threading.Thread(target = after_action, daemon = True).start() #update to GUI
+    threading.Thread(target=after_action, daemon=True).start()  # update to GUI
+
 
 def chip_selected_directory():
-    project_directory = folder_path_entry.get() #gets the dirr
+    project_directory = folder_path_entry.get()  # gets the dirr
     if not project_directory:
-        messagebox.showerror("Error", "Please select a project folder.") #message
+        messagebox.showerror("Error", "Please select a project folder.")  # message
         return
 
     def after_action():
         chip_directory(project_directory)  # Just "chip" the main directory
-        display_directory_structure(project_directory, tree) # display directory
+        display_directory_structure(project_directory, tree)  # display directory
 
-        #after
+        # after
         analyze_button["state"] = "normal"
         chip_button["state"] = "normal"
         browse_button["state"] = "normal"
-        refresh_button["state"] = "normal" #Enable the refresh
+        refresh_button["state"] = "normal"  # Enable the refresh
 
-    #Disabe the buttons
+    # Disabe the buttons
     analyze_button["state"] = "disabled"
     chip_button["state"] = "disabled"
     browse_button["state"] = "disabled"
-    refresh_button["state"] = "disabled" #Disable the refresh
+    refresh_button["state"] = "disabled"  # Disable the refresh
 
-    threading.Thread(target = after_action, daemon = True).start() #update in the gui display
+    threading.Thread(target=after_action, daemon=True).start()  # update in the gui display
+
 
 # --- GUI Buttons ---
 analyze_button = ttk.Button(main_frame, text="Analyze Project", command=analyze_project)
@@ -271,7 +284,7 @@ chip_button = ttk.Button(main_frame, text="Chip Directory", command=chip_selecte
 chip_button.pack(pady=(5, 0), fill='x')
 
 refresh_button = ttk.Button(main_frame, text="Refresh View", command=analyze_project)
-refresh_button.pack(pady=(5, 0), fill='x') # refresh view
+refresh_button.pack(pady=(5, 0), fill='x')  # refresh view
 
 # --- Run the GUI ---
 root.mainloop()
