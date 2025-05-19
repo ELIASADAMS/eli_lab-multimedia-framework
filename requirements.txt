@@ -1,0 +1,6 @@
+pip~=24.0
+setuptools~=68.0.0
+future~=1.0.0
+tkcalendar~=1.6.1
+python-magic~=0.4.27
+Pillow~=9.5.0
